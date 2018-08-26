@@ -20,10 +20,9 @@
  """
 
 import logging
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtGui, uic
-from qgis.gui import QgsMapLayerProxyModel
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtWidgets import *
+from qgis.PyQt import uic
 import sys
 from functools import partial
 import numpy as np
@@ -31,7 +30,8 @@ from collections import OrderedDict
 
 from ..common_tools.global_parameters import *
 from ..common_tools.auxiliary_functions import *
-from ..common_tools import ReportDialog, GetOutputFileName, GetOutputFolderName
+from ..common_tools import ReportDialog
+from ..common_tools.get_output_file_name import *
 
 from aequilibrae.transit.gtfs import create_gtfsdb
 
@@ -148,7 +148,7 @@ class GtfsImportDialog(QDialog, FORM_CLASS):
 
     def run_thread(self):
 
-        QObject.connect(self.worker_thread, SIGNAL("converting_gtfs"), self.signal_handler)
+        self.worker_thread.converting_gtfs.connect(self.signal_handler)
         self.worker_thread.import_gtfs()
         self.exec_()
 
